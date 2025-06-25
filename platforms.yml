@@ -1,0 +1,71 @@
+# Platform Configuration for Ticket Sync
+# This file defines the external platforms to monitor for tickets
+
+# Performance settings
+sync_settings:
+  max_results_per_platform: 20
+  parallel_execution: true
+  skip_older_than_months: 6
+  batch_issue_creation: true
+
+platforms:
+  spack:
+    name: "Spack"
+    description: "HPC package manager"
+    search_urls:
+      - "https://github.com/spack/spack/issues"
+    search_terms:
+      - "ADIOS2"
+      - "adios2"
+    labels: ["spack", "external-sync"]
+
+  conda-forge:
+    name: "Conda-forge"
+    description: "Community-driven packaging for conda"
+    search_urls:
+      - "https://github.com/conda-forge/adios2-feedstock/issues"
+      - "https://github.com/conda-forge/staged-recipes/issues"
+    search_terms:
+      - "ADIOS2"
+      - "adios2"
+    labels: ["conda-forge", "external-sync"]
+
+  opensuse-bugzilla:
+    name: "OpenSUSE Bugzilla"
+    description: "OpenSUSE bug tracking system"
+    search_urls:
+      - "https://bugzilla.opensuse.org/"
+    search_terms:
+      - "ADIOS2"
+      - "adios2"
+      - "libadios2"
+    labels: ["opensuse", "bugzilla", "external-sync"]
+
+  ubuntu-launchpad:
+    name: "Ubuntu Launchpad"
+    description: "Ubuntu bug tracking and project management"
+    search_urls:
+      - "https://bugs.launchpad.net/"
+    search_terms:
+      - "ADIOS2"
+      - "adios2"
+      - "libadios2"
+    labels: ["ubuntu", "launchpad", "external-sync"]
+
+# Issue template for external tickets
+issue_template: |
+  **Platform:** {platform_name}
+  **Original URL:** {original_url}
+  **Status:** {status}
+  **Created:** {created_date}
+
+  ---
+
+  **Original Title:** {original_title}
+
+  **Description:**
+  {description}
+
+  ---
+
+  *Auto-synced from external platform. Check original URL for updates.*

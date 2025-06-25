@@ -1,0 +1,50 @@
+name: Ticket Sync
+
+on:
+  schedule:
+    - cron: '0 10 * * 1'
+  workflow_dispatch:
+    # Allow manual triggering
+
+jobs:
+  sync-tickets:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - repo: "Viskores/viskores"
+            token_secret_name: "VISKORES_TOKEN"
+          - repo: "ornladios/ADIOS2"
+            token_secret_name: "ADIOS2_TOKEN"
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install Claude Code CLI
+      run: |
+        npm install -g @anthropic-ai/claude-code
+
+    - name: Setup GitHub CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install gh
+
+    - name: Configure GitHub CLI
+      run: |
+        if [ "${{ matrix.token_secret_name }}" = "VISKORES_TOKEN" ]; then
+          echo "${{ secrets.VISKORES_TOKEN }}" | gh auth login --with-token
+        elif [ "${{ matrix.token_secret_name }}" = "ADIOS2_TOKEN" ]; then
+          echo "${{ secrets.ADIOS2_TOKEN }}" | gh auth login --with-token
+        fi
+
+    - name: Run ticket sync
+      env:
+        ANTHROPIC_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+        TARGET_REPO: ${{ matrix.repo }}
+      run: claude --dangerously-skip-permissions ./prompt.txt
