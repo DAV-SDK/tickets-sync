@@ -8,26 +8,41 @@ sync_settings:
   skip_older_than_months: 6
   batch_issue_creation: true
 
+# Software projects with their specific search keywords
+# Use PROJECT_NAME environment variable to specify which project to sync
+projects:
+  adios2:
+    name: "ADIOS2"
+    description: "Adaptable IO System for HPC"
+    search_terms:
+      - "ADIOS2"
+      - "adios2"
+      - "libadios2"
+    feedstock_name: "adios2"  # For conda-forge feedstock URLs
+
+  viskores:
+    name: "viskores"
+    description: "Cross-platform build system"
+    search_terms:
+      - "Viskores"
+      - "viskores"
+    feedstock_name: "viskores"
+
+# Platform configurations (search_terms will be populated from project config)
 platforms:
   spack:
     name: "Spack"
     description: "HPC package manager"
     search_urls:
       - "https://github.com/spack/spack/issues"
-    search_terms:
-      - "ADIOS2"
-      - "adios2"
     labels: ["spack", "external-sync"]
 
   conda-forge:
     name: "Conda-forge"
     description: "Community-driven packaging for conda"
     search_urls:
-      - "https://github.com/conda-forge/adios2-feedstock/issues"
+      - "https://github.com/conda-forge/{feedstock_name}-feedstock/issues"
       - "https://github.com/conda-forge/staged-recipes/issues"
-    search_terms:
-      - "ADIOS2"
-      - "adios2"
     labels: ["conda-forge", "external-sync"]
 
   opensuse-bugzilla:
@@ -35,10 +50,6 @@ platforms:
     description: "OpenSUSE bug tracking system"
     search_urls:
       - "https://bugzilla.opensuse.org/"
-    search_terms:
-      - "ADIOS2"
-      - "adios2"
-      - "libadios2"
     labels: ["opensuse", "bugzilla", "external-sync"]
 
   ubuntu-launchpad:
@@ -46,10 +57,6 @@ platforms:
     description: "Ubuntu bug tracking and project management"
     search_urls:
       - "https://bugs.launchpad.net/"
-    search_terms:
-      - "ADIOS2"
-      - "adios2"
-      - "libadios2"
     labels: ["ubuntu", "launchpad", "external-sync"]
 
 # Issue template for external tickets

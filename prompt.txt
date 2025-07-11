@@ -1,4 +1,9 @@
-I need you to help sync external tickets to the GitHub repository specified in the TARGET_REPO environment variable.
+I need you to help sync external tickets to the GitHub repository specified in the TARGET_REPO environment variable for the project specified in the PROJECT_NAME environment variable.
+
+CONFIGURATION LOADING:
+1. REQUIRED: Load platforms.yml and validate that PROJECT_NAME environment variable matches an existing project
+2. REQUIRED: Extract search terms from the specified project configuration
+3. REQUIRED: Dynamically populate platform search URLs using project's feedstock_name where applicable
 
 FAST EXECUTION STRATEGY:
 1. Use parallel tool calls to batch operations - run all gh CLI commands, searches, and platform checks simultaneously
@@ -10,11 +15,11 @@ WORKFLOW:
    - gh issue list --repo $TARGET_REPO --state all --search "external-sync" --limit 50 (find existing synced issues)
    - gh issue list --repo $TARGET_REPO --state open --limit 20 (recent open issues)
 
-2. PARALLEL PLATFORM SEARCH: Use platforms.yml config to search all platforms simultaneously (if they exist):
-   - Spack: github.com/spack/spack/issues (search for package name)
-   - Conda-forge: github.com/conda-forge/{package}-feedstock/issues
-   - SUSE Bugzilla: Direct search for package bugs
-   - Ubuntu Launchpad: bugs.launchpad.net/ubuntu/+source/{package}
+2. PARALLEL PLATFORM SEARCH: Use platforms.yml config with PROJECT_NAME search terms to search all platforms simultaneously:
+   - Spack: github.com/spack/spack/issues (search for project search terms)
+   - Conda-forge: github.com/conda-forge/{project.feedstock_name}-feedstock/issues (use project's feedstock_name)
+   - SUSE Bugzilla: Direct search for project search terms
+   - Ubuntu Launchpad: bugs.launchpad.net/ubuntu/+source/{project search terms}
 
 3. SMART DUPLICATE DETECTION: Before creating issues, check if external URL already exists in any GitHub issue body or title
 
@@ -28,7 +33,14 @@ OPTIMIZATION RULES:
 - Limit searches to 20 results per platform max
 
 CRITICAL:
+- ALWAYS validate PROJECT_NAME exists in platforms.yml projects section first
+- Use project-specific search terms from platforms.yml configuration
 - Follow platforms.yml template exactly for issue creation
-- Only sync tickets created STRICTLY in the last 6 month (use date to chekc todays date).
+- Only sync tickets created STRICTLY in the last 6 month (use date to check today's date)
 - If the platform is a github repo, only sync the issues (NEVER the pull requests)
-- ONLY syncronize tickets related to the $TARGET_REPO source code, never package dependent issues.
+- ONLY synchronize tickets related to the $TARGET_REPO source code, never package dependent issues
+- Replace {feedstock_name} in conda-forge URLs with the project's feedstock_name
+
+ENVIRONMENT VARIABLES REQUIRED:
+- TARGET_REPO: GitHub repository to sync tickets to
+- PROJECT_NAME: Project identifier from platforms.yml (e.g., "adios2", "vtk", "paraview", "cmake")
