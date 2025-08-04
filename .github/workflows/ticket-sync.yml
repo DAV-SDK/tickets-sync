@@ -26,9 +26,9 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Install Claude Code CLI
+    - name: Install Gemini CLI
       run: |
-        npm install -g @anthropic-ai/claude-code
+        npm install -g @google/gemini-cli
 
     - name: Setup GitHub CLI
       run: |
@@ -45,6 +45,6 @@ jobs:
 
     - name: Run ticket sync
       env:
-        ANTHROPIC_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+        ANTHROPIC_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         TARGET_REPO: ${{ matrix.repo }}
-      run: claude --dangerously-skip-permissions ./prompt.txt
+      run: gemini --yolo -p ./prompt.txt

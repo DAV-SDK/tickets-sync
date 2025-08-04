@@ -11,11 +11,11 @@ A CI pipeline that automatically syncs open and active tickets from external pla
 
 ## How It Works
 
-The pipeline uses Claude Code CLI to intelligently search for and sync external tickets:
+The pipeline uses Gemini Code CLI to intelligently search for and sync external tickets:
 
 1. **Scheduled Execution**: Runs daily at 6 AM UTC via GitHub Actions
 2. **Repository Processing**: Uses GitHub Actions matrix strategy for parallel processing
-3. **Intelligent Sync**: Uses Claude Code to:
+3. **Intelligent Sync**: Uses Gemini Code to:
    - Search external platforms for relevant tickets
    - Check for existing GitHub issues to avoid duplicates
    - Create new issues with proper labeling and formatting
@@ -46,7 +46,7 @@ strategy:
 
 In your GitHub repository settings, add these secrets:
 
-- `CLAUDE_API_KEY`: Your Anthropic Claude API key
+- `GEMINI_API_KEY`: Your Anthropic Gemini API key
 - Repository-specific tokens (e.g., `YOUR_REPO_TOKEN`, `ANOTHER_REPO_TOKEN`): GitHub Personal Access Tokens with appropriate permissions for each target repository
 
 ### 3. Manual Run
@@ -55,13 +55,13 @@ You can manually trigger the sync workflow from the GitHub Actions tab or run lo
 
 ```bash
 # Set environment variables
-export CLAUDE_API_KEY="your_api_key"
+export GEMINI_API_KEY="your_api_key"
 export GITHUB_TOKEN="your_github_token"
 export TARGET_REPO="your-org/your-repo"
 export PROJECT_NAME="adios2"  # or "vtk", "paraview", "cmake"
 
 # Run the sync script
-claude --dangerously-skip-permissions ./prompt.txt
+gemini --dangerously-skip-permissions ./prompt.txt
 ```
 
 ## Configuration Files
