@@ -14,8 +14,10 @@ jobs:
         include:
           - repo: "Viskores/viskores"
             token_secret_name: "VISKORES_TOKEN"
+            name: "viskores"
           - repo: "ornladios/ADIOS2"
             token_secret_name: "ADIOS2_TOKEN"
+            name: "adios2"
 
     steps:
     - name: Checkout repository
@@ -26,9 +28,9 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Install Claude Code CLI
+    - name: Install Gemini CLI
       run: |
-        npm install -g @anthropic-ai/claude-code
+        npm install -g @google/gemini-cli
 
     - name: Setup GitHub CLI
       run: |
@@ -45,6 +47,7 @@ jobs:
 
     - name: Run ticket sync
       env:
-        ANTHROPIC_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         TARGET_REPO: ${{ matrix.repo }}
-      run: claude --dangerously-skip-permissions ./prompt.txt
+        PROJECT_NAME: ${{ matrix.name }}
+      run: gemini --yolo < ./prompt.txt

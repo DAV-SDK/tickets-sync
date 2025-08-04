@@ -1,10 +1,10 @@
-# Claude Configuration
+# Gemini Configuration
 
-This file configures the tools that Claude Code can use in this project.
+This file configures the tools that Gemini Code can use in this project.
 
 ## Allowed Tools
 
-Claude Code is pre-allowed to use the following tools for ticket synchronization:
+Gemini Code is pre-allowed to use the following tools for ticket synchronization:
 
 - **Bash** - Execute shell commands for running sync scripts and GitHub CLI operations
 - **Read** - Read configuration files (repos.txt, platforms.yml, README.md)
