@@ -39,11 +39,7 @@ jobs:
 
     - name: Configure GitHub CLI
       run: |
-        if [ "${{ matrix.token_secret_name }}" = "VISKORES_TOKEN" ]; then
-          echo "${{ secrets.VISKORES_TOKEN }}" | gh auth login --with-token
-        elif [ "${{ matrix.token_secret_name }}" = "ADIOS2_TOKEN" ]; then
-          echo "${{ secrets.ADIOS2_TOKEN }}" | gh auth login --with-token
-        fi
+        echo "$${{ matrix.token_secret_name }}" | gh auth login --with-token
 
     - name: Run ticket sync
       env:
