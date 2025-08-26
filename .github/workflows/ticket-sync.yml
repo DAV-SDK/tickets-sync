@@ -37,12 +37,9 @@ jobs:
         sudo apt-get update
         sudo apt-get install gh
 
-    - name: Configure GitHub CLI
-      run: |
-        echo "$${{ matrix.token_secret_name }}" | gh auth login --with-token
-
     - name: Run ticket sync
       env:
+        GH_TOKEN: ${{ secrets[matrix.token_secret_name] }}
         ANTHROPIC_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
         PROJECT_NAME: ${{ matrix.name }}
         TARGET_REPO: ${{ matrix.repo }}
